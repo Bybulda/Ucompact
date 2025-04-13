@@ -24,9 +24,14 @@ public class ShortUrlService {
             newShortUrl = generateShortUrl();
         }
         ShortUrl shortUrl = ShortUrl.builder().originUrl(url)
-                .shortenUrl(String.format("localhost:8080/api/url/{%s}", newShortUrl)).build();
+                .shortenUrl(newShortUrl).build();
         shortUrlRepository.save(shortUrl);
         return newShortUrl;
+    }
+
+    public Optional<ShortUrl> getOriginalUrl(String shortUrl) {
+        return shortUrlRepository.findByShortenUrl(shortUrl);
+
     }
 
     private String generateShortUrl() {
