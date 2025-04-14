@@ -1,6 +1,7 @@
 package org.application.controller;
 
 import org.application.dto.LinkDto;
+import org.application.exceptions.ShortUrlNotFoundException;
 import org.application.model.ShortUrl;
 import org.application.service.ShortUrlService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,9 @@ public class UrlController {
         Optional<ShortUrl> shortUrl = urlService.getOriginalUrl(url);
         if (shortUrl.isPresent()) {
             redirectView.setUrl(shortUrl.get().getOriginUrl());
+            return redirectView;
+        } else{
+            throw new ShortUrlNotFoundException("Short url not found for code: " + url);
         }
-        return redirectView;
     }
 }
